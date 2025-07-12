@@ -135,7 +135,7 @@ GameObject:
   - component: {fileID: 4429532341369274458}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -181,6 +181,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   transitionTime: 0.35
+  movementDeley: 0.05
+  isMoving: 0
+  inputEnabled: 1
 --- !u!114 &478359683655189906
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -193,6 +196,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 714d4b7fed0586f40b628ca203d9c219, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  minimalWaterYThreshold: 1
+  overlapSizeOnLog: 0.9
+  overlapSizeOnGoal: 0.7
 --- !u!61 &1987767580169471515
 BoxCollider2D:
   m_ObjectHideFlags: 0

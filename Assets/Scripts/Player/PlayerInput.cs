@@ -8,12 +8,17 @@ public class PlayerInput : MonoBehaviour
     public bool IsMovingUp { get; private set; }
     public bool IsMovingLeft { get; private set; }
     public bool IsMovingRight { get; private set; }
-
     public bool IsMovingDown { get; private set; }
+
+    private bool isGameStarted = false;
+
+    private void Awake()
+    {
+        playerInput = new Player();
+    }
 
     private void OnEnable()
     {
-        playerInput = new Player();
         playerInput.Enable();
 
         playerInput.Movement.Up.performed += OnUpMovePerformed;
@@ -27,6 +32,8 @@ public class PlayerInput : MonoBehaviour
 
         playerInput.Movement.Down.performed += OnDownMovePerformed;
         playerInput.Movement.Down.canceled += OnDownMoveCanceled;
+
+        GameStart.OnGameStarted += () => isGameStarted = true;
     }
 
     private void OnDisable()
@@ -44,25 +51,35 @@ public class PlayerInput : MonoBehaviour
 
         playerInput.Movement.Down.performed -= OnDownMovePerformed;
         playerInput.Movement.Down.canceled -= OnDownMoveCanceled;
+
+        GameStart.OnGameStarted -= () => isGameStarted = true;
     }
 
     private void OnUpMovePerformed(CallbackContext context)
     {
+        if(!isGameStarted) return;
+
         IsMovingUp = true;
     }
 
     private void OnLeftMovePerformed(CallbackContext context)
     {
+        if (!isGameStarted) return;
+
         IsMovingLeft = true;
     }
 
     private void OnRightMovePerformed(CallbackContext context)
     {
+        if (!isGameStarted) return;
+
         IsMovingRight = true;
     }
 
     private void OnDownMovePerformed(CallbackContext context)
     {
+        if (!isGameStarted) return;
+
         IsMovingDown = true;
     }
 

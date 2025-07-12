@@ -1,13 +1,19 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private float transitionTime = 0.5f;
+    [SerializeField] private float movementDeley = 0.05f;
 
-    private bool isMoving = false;
+    public bool isMoving = false;
+    public bool inputEnabled = true;
 
     private PlayerInput playerInput;
+
+    public static event Action<Vector3> OnPlayerUpMove;
+    public static event Action OnPlayerMovementFinished;
 
     private void Awake()
     {
@@ -16,7 +22,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        if (isMoving) return;
+        if (isMoving || !inputEnabled) return;
 
         if (playerInput.IsMovingUp)
         {
@@ -39,6 +45,7 @@ public class PlayerMovement : MonoBehaviour
     private IEnumerator MoveRoutine(Vector3 direction)
     {
         isMoving = true;
+        inputEnabled = false;
         float elapsedTime = 0f;
 
         Vector3 startPosition = transform.position;
@@ -54,7 +61,13 @@ public class PlayerMovement : MonoBehaviour
         }
 
         transform.position = targetPosition;
+        OnPlayerUpMove?.Invoke(targetPosition);
 
         isMoving = false;
+        OnPlayerMovementFinished?.Invoke();
+
+        yield return new WaitForSeconds(movementDeley);
+
+        inputEnabled = true;
     }
 }

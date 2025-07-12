@@ -1,13 +1,13 @@
 using UnityEngine;
 
-public class LogSpawner : MonoBehaviour, ISpawner
+public class WaterObsticlesSpawner : MonoBehaviour, ISpawner
 {
     [SerializeField] private Transform[] leftSpawnPoints;
     [SerializeField] private Transform[] rightSpawnPoints;
 
     [SerializeField] private float spawnInterval = 2f;
 
-    private LogObjectPool logObjectPool;
+    private WaterObsticlesObjectPool waterObsticlesObjectPool;
 
     private bool lastSpawnWasLeft;
     private int lastLeftSpawnIndex = -1;
@@ -15,7 +15,7 @@ public class LogSpawner : MonoBehaviour, ISpawner
 
     private void Awake()
     {
-        logObjectPool = GetComponent<LogObjectPool>();
+        waterObsticlesObjectPool = GetComponent<WaterObsticlesObjectPool>();
         lastSpawnWasLeft = Random.value < 0.5f;
         InvokeRepeating(nameof(Spawn), 0f, spawnInterval);
     }
@@ -49,21 +49,21 @@ public class LogSpawner : MonoBehaviour, ISpawner
         Transform spawnPoint = spawnPoints[spawnIndex];
         lastSpawnWasLeft = spawnLeft;
 
-        GameObject logObj = logObjectPool.GetObjectFromPool();
-        if (logObj == null)
+        GameObject waterObsticle = waterObsticlesObjectPool.GetObjectFromPool();
+        if (waterObsticle == null)
         {
             Debug.LogWarning("No log object available in pool.");
             return;
         }
 
-        LogMove log = logObj.GetComponent<LogMove>();
-        if (log == null)
+        WaterObsticlesMove waterObsticleMove = waterObsticle.GetComponent<WaterObsticlesMove>();
+        if (waterObsticleMove == null)
         {
-            Debug.LogWarning("LogMove component missing on pooled object.");
+            Debug.LogWarning("WaterObsticlesMove component missing on pooled object.");
             return;
         }
 
-        log.transform.position = spawnPoint.position;
-        log.SetMoveDirection(moveDirection);
+        waterObsticleMove.transform.position = spawnPoint.position;
+        waterObsticleMove.SetMoveDirection(moveDirection);
     }
 }

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class LogMove : MonoBehaviour
+public class WaterObsticlesMove : MonoBehaviour
 {
     [SerializeField] private Vector3 moveDirection = Vector3.right;
 
