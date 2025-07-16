@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public static class PlatformDetectionUtility
@@ -6,29 +7,43 @@ public static class PlatformDetectionUtility
     {
         Collider2D[] hits = Physics2D.OverlapBoxAll(sourceCollider.bounds.center, sourceCollider.bounds.size, 0f, platformMask);
 
-        float maxOverlap = 0f;
-        Transform bestMatch = null;
+
+        float sourceArea = sourceCollider.bounds.size.x * sourceCollider.bounds.size.y;
+
+        Dictionary<Transform, float> platformOverlaps = new Dictionary<Transform, float>();
 
         foreach (Collider2D hit in hits)
         {
-            if (hit == null)
+            if (hit == null || hit == sourceCollider)
                 continue;
+
+            Transform groupRoot = GetPlatformGroup(hit);
 
             if (TryCalculateIntersection(sourceCollider.bounds, hit.bounds, out Bounds intersection))
             {
                 float intersectionArea = intersection.size.x * intersection.size.y;
-                float sourceArea = sourceCollider.bounds.size.x * sourceCollider.bounds.size.y;
-                float overlapRatio = intersectionArea / sourceArea;
 
-                if (overlapRatio >= requiredPlatformOverlap && overlapRatio > maxOverlap)
-                {
-                    maxOverlap = overlapRatio;
-                    bestMatch = hit.transform;
-                }
+                if (!platformOverlaps.ContainsKey(groupRoot))
+                    platformOverlaps[groupRoot] = 0f;
+
+                platformOverlaps[groupRoot] += intersectionArea;
             }
         }
 
-        platformTransform = bestMatch;
+        platformTransform = null;
+        float maxOverlap = 0f;
+
+        foreach (var item in platformOverlaps)
+        {
+            float overlapArea = item.Value / sourceArea;
+
+            if (overlapArea>= requiredPlatformOverlap && overlapArea > maxOverlap)
+            {
+                maxOverlap = overlapArea;
+                platformTransform = item.Key;
+            }
+        }
+
         return platformTransform != null;
     }
 
@@ -48,5 +63,11 @@ public static class PlatformDetectionUtility
 
         result = new Bounds();
         return false;
+    }
+
+    private static Transform GetPlatformGroup(Collider2D collider)
+    {
+        var group = collider.GetComponentInParent<PlatformGroup>();
+        return group != null ? group.transform : collider.transform.root;
     }
 }

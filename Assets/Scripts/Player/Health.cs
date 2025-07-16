@@ -7,10 +7,10 @@ public class Health : MonoBehaviour
 
     private int currentHealth;
 
-    public bool IsAlive = true;
+    public bool IsAlive { get; private set; } = true;
 
     public event Action<int> OnHealthChanged;
-    public static event Action<GameEndCondition> OnPlayerDied;
+    public event Action<GameEndCondition> OnPlayerDied;
 
     private void Awake()
     {
@@ -19,7 +19,9 @@ public class Health : MonoBehaviour
 
     public void CheckForDeath()
     {
-        if(currentHealth <= 0)
+        if (!IsAlive) return;
+
+        if (currentHealth <= 0)
         {
             IsAlive = false;
             OnPlayerDied?.Invoke(GameEndCondition.PlayerDied);
@@ -30,6 +32,13 @@ public class Health : MonoBehaviour
     {
         currentHealth--;
         CheckForDeath();
+        OnHealthChanged?.Invoke(currentHealth);
+    }
+
+    public void ResetHealth()
+    {
+        currentHealth = maxHealth;
+        IsAlive = true;
         OnHealthChanged?.Invoke(currentHealth);
     }
 }

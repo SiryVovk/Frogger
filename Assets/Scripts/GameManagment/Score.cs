@@ -2,6 +2,11 @@ using UnityEngine;
 
 public class Score : MonoBehaviour
 {
+    [Header("Dependencies")]
+    [SerializeField] private Health health;
+    [SerializeField] private PlayerMovement playerMovement;
+
+    [Header("Score Increments")]
     [SerializeField] private int scoreIncrementUpMovement = 10;
     [SerializeField] private int scoreIncrementOnGoal = 100;
     [SerializeField] private int scoreIncrementOnTimeBonus = 5;
@@ -13,15 +18,22 @@ public class Score : MonoBehaviour
     private float highestY = float.MinValue;
     private float currentTime;
 
-    private const string HIGH_SCORE_KEY = "HighScore";
-
     private void OnEnable()
     {
-        PlayerMovement.OnPlayerUpMove += HandleUpMovement;
+        playerMovement.OnPlayerUpMove += HandleUpMovement;
         PlayerRespawn.OnRespawn += ResetHighestY;
         GoalTrigger.OnGoalReached += HandleGoalReached;
         GoalsCounter.OnAllGoalsReached += (x) => IncreaseScore(scoreIncrementOnWin);
-        Health.OnPlayerDied += SaveHighScore;
+        health.OnPlayerDied += SaveHighScore;
+    }
+
+    private void OnDisable()
+    {
+        playerMovement.OnPlayerUpMove -= HandleUpMovement;
+        PlayerRespawn.OnRespawn -= ResetHighestY;
+        GoalTrigger.OnGoalReached -= HandleGoalReached;
+        GoalsCounter.OnAllGoalsReached -= (x) => IncreaseScore(scoreIncrementOnWin);
+        health.OnPlayerDied -= SaveHighScore;
     }
 
     private void Start()
@@ -75,10 +87,10 @@ public class Score : MonoBehaviour
 
     private void SaveHighScore(GameEndCondition gameEndCondition)
     { 
-        int highScore = PlayerPrefs.GetInt(HIGH_SCORE_KEY, 0);
+        int highScore = PlayerPrefs.GetInt(PlayerPrefrencesStrings.HIGH_SCORE_KEY, 0);
         if (score > highScore)
         {
-            PlayerPrefs.SetInt(HIGH_SCORE_KEY, score);
+            PlayerPrefs.SetInt(PlayerPrefrencesStrings.HIGH_SCORE_KEY, score);
             PlayerPrefs.Save();
         }
     }

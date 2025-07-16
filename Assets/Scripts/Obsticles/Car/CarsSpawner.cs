@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class CarsSpawner : MonoBehaviour, ISpawner
@@ -6,13 +7,14 @@ public class CarsSpawner : MonoBehaviour, ISpawner
     [SerializeField] private Transform[] rightSpawnPoints;
 
     [SerializeField] private float spawnInterval = 2f;
+    [SerializeField] private float minSpawnInterval = 0.5f;
 
     private CarObjectPool carObjectPool;
 
     private void Start()
     {
         carObjectPool = GetComponent<CarObjectPool>();
-        InvokeRepeating(nameof(Spawn), 0f, spawnInterval);
+        StartCoroutine(InitializeSpawner());
     }
 
     public void Spawn()
@@ -33,5 +35,22 @@ public class CarsSpawner : MonoBehaviour, ISpawner
         CarMove car = carObjectPool.GetObjectFromPool().GetComponent<CarMove>();
         car.transform.position = spawnPoint.position;
         car.SetMoveDirection(moveDirection);
+    }
+
+    private IEnumerator InitializeSpawner()
+    {
+        while(true)
+        {
+            yield return new WaitForSeconds(spawnInterval);
+            Spawn();
+        }
+    }
+
+    public void DecreseInterval(float decreseAmount)
+    {
+        if (spawnInterval > minSpawnInterval)
+        {
+            spawnInterval -= decreseAmount;
+        }
     }
 }

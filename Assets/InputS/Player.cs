@@ -187,6 +187,15 @@ public partial class @Player: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""EndGame"",
+                    ""type"": ""Button"",
+                    ""id"": ""a95ff8c7-de67-4709-9f06-e5a821dcdd62"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -198,6 +207,17 @@ public partial class @Player: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""StartGame"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""50ca487e-e328-401d-aa62-2bea9dc7108b"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""EndGame"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -215,6 +235,7 @@ public partial class @Player: IInputActionCollection2, IDisposable
         // Menu
         m_Menu = asset.FindActionMap("Menu", throwIfNotFound: true);
         m_Menu_StartGame = m_Menu.FindAction("StartGame", throwIfNotFound: true);
+        m_Menu_EndGame = m_Menu.FindAction("EndGame", throwIfNotFound: true);
     }
 
     ~@Player()
@@ -426,6 +447,7 @@ public partial class @Player: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Menu;
     private List<IMenuActions> m_MenuActionsCallbackInterfaces = new List<IMenuActions>();
     private readonly InputAction m_Menu_StartGame;
+    private readonly InputAction m_Menu_EndGame;
     /// <summary>
     /// Provides access to input actions defined in input action map "Menu".
     /// </summary>
@@ -441,6 +463,10 @@ public partial class @Player: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Menu/StartGame".
         /// </summary>
         public InputAction @StartGame => m_Wrapper.m_Menu_StartGame;
+        /// <summary>
+        /// Provides access to the underlying input action "Menu/EndGame".
+        /// </summary>
+        public InputAction @EndGame => m_Wrapper.m_Menu_EndGame;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -470,6 +496,9 @@ public partial class @Player: IInputActionCollection2, IDisposable
             @StartGame.started += instance.OnStartGame;
             @StartGame.performed += instance.OnStartGame;
             @StartGame.canceled += instance.OnStartGame;
+            @EndGame.started += instance.OnEndGame;
+            @EndGame.performed += instance.OnEndGame;
+            @EndGame.canceled += instance.OnEndGame;
         }
 
         /// <summary>
@@ -484,6 +513,9 @@ public partial class @Player: IInputActionCollection2, IDisposable
             @StartGame.started -= instance.OnStartGame;
             @StartGame.performed -= instance.OnStartGame;
             @StartGame.canceled -= instance.OnStartGame;
+            @EndGame.started -= instance.OnEndGame;
+            @EndGame.performed -= instance.OnEndGame;
+            @EndGame.canceled -= instance.OnEndGame;
         }
 
         /// <summary>
@@ -567,5 +599,12 @@ public partial class @Player: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnStartGame(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "EndGame" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnEndGame(InputAction.CallbackContext context);
     }
 }

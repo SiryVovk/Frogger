@@ -14,13 +14,11 @@ public class PlayerInput : MonoBehaviour
 
     private void Awake()
     {
-        playerInput = new Player();
+        playerInput = InputManager.InputActions;
     }
 
     private void OnEnable()
     {
-        playerInput.Enable();
-
         playerInput.Movement.Up.performed += OnUpMovePerformed;
         playerInput.Movement.Up.canceled += OnUpMoveCanceled;
 
@@ -38,8 +36,6 @@ public class PlayerInput : MonoBehaviour
 
     private void OnDisable()
     {
-        playerInput.Disable();
-
         playerInput.Movement.Up.performed -= OnUpMovePerformed;
         playerInput.Movement.Up.canceled -= OnUpMoveCanceled;
 

@@ -1,11 +1,11 @@
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using UnityEditorInternal;
 using UnityEngine;
 
 public class PlayerCollision : MonoBehaviour
 {
+    [Header("References")]
+    [SerializeField] private PlayerMovement playerMovement;
+    [Header("Collision Settings")]
     [SerializeField] private float minimalWaterYThreshold = 1f;
     [SerializeField] private float overlapSizeOnLog = 0.9f;
     [SerializeField] private float overlapSizeOnGoal = 0.7f;
@@ -16,12 +16,12 @@ public class PlayerCollision : MonoBehaviour
 
     private void OnEnable()
     {
-        PlayerMovement.OnPlayerMovementFinished += CheckPositionAfterMove;
+        playerMovement.OnPlayerMovementFinished += CheckPositionAfterMove;
     }
 
     private void OnDisable()
     {
-        PlayerMovement.OnPlayerMovementFinished -= CheckPositionAfterMove;
+        playerMovement.OnPlayerMovementFinished -= CheckPositionAfterMove;
     }
 
     private void Start()
@@ -133,6 +133,7 @@ public class PlayerCollision : MonoBehaviour
     private IEnumerator GoalSequenceRoutine(GameObject ghostPlayerPrefab, Vector3 goalPosition, Transform parentGoal)
     {
         PlayerMovement movement = GetComponent<PlayerMovement>();
+        boxCollider2D.enabled = false;
 
         if (movement != null)
         {

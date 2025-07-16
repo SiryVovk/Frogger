@@ -7,7 +7,7 @@ public class WaterObsticlesObjectPool : MonoBehaviour, IObjectPool
 
     [SerializeField] private int poolSize = 10;
 
-    private Queue<GameObject> waterObsticlesPool;
+    private List<GameObject> waterObsticlesPool;
 
     private void Awake()
     {
@@ -45,7 +45,9 @@ public class WaterObsticlesObjectPool : MonoBehaviour, IObjectPool
 
         if(waterObsticlesPool.Count > 0)
         {
-            waterObsticle = waterObsticlesPool.Dequeue();
+            int randomIndex = Random.Range(0, waterObsticlesPool.Count);
+            waterObsticle = waterObsticlesPool[randomIndex];
+            waterObsticlesPool.RemoveAt(randomIndex);
             waterObsticle.SetActive(true);
             return waterObsticle;
         }
@@ -55,12 +57,12 @@ public class WaterObsticlesObjectPool : MonoBehaviour, IObjectPool
 
     public void InitilizePool()
     {
-        waterObsticlesPool = new Queue<GameObject>();
+        waterObsticlesPool = new List<GameObject>();
 
         for (int i = 0; i < poolSize; i++)
         {
             GameObject waterObsticl = CreateObject();
-            waterObsticlesPool.Enqueue(waterObsticl);
+            waterObsticlesPool.Add(waterObsticl);
         }
     }
 
@@ -73,7 +75,7 @@ public class WaterObsticlesObjectPool : MonoBehaviour, IObjectPool
         else
         {
             gameObject.SetActive(false);
-            waterObsticlesPool.Enqueue(gameObject);
+            waterObsticlesPool.Add(gameObject);
         }
     }
 }

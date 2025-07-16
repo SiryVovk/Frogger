@@ -12,8 +12,8 @@ public class PlayerMovement : MonoBehaviour
 
     private PlayerInput playerInput;
 
-    public static event Action<Vector3> OnPlayerUpMove;
-    public static event Action OnPlayerMovementFinished;
+    public  event Action<Vector3> OnPlayerUpMove;
+    public  event Action OnPlayerMovementFinished;
 
     private void Awake()
     {

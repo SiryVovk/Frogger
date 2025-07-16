@@ -7,9 +7,11 @@ TagManager:
   - Water
   - Dispawn
   - Car
-  - Log
   - Player Dispawn
   - Goal
+  - Turtle
+  - Crocodile
+  - Log
   layers:
   - Default
   - TransparentFX

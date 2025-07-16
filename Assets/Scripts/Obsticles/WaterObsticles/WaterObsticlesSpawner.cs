@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class WaterObsticlesSpawner : MonoBehaviour, ISpawner
@@ -6,6 +7,7 @@ public class WaterObsticlesSpawner : MonoBehaviour, ISpawner
     [SerializeField] private Transform[] rightSpawnPoints;
 
     [SerializeField] private float spawnInterval = 2f;
+    [SerializeField] private float maxSpawnInterval = 3f;
 
     private WaterObsticlesObjectPool waterObsticlesObjectPool;
 
@@ -17,7 +19,7 @@ public class WaterObsticlesSpawner : MonoBehaviour, ISpawner
     {
         waterObsticlesObjectPool = GetComponent<WaterObsticlesObjectPool>();
         lastSpawnWasLeft = Random.value < 0.5f;
-        InvokeRepeating(nameof(Spawn), 0f, spawnInterval);
+        StartCoroutine(InitializeSpawner());
     }
 
     public void Spawn()
@@ -64,6 +66,49 @@ public class WaterObsticlesSpawner : MonoBehaviour, ISpawner
         }
 
         waterObsticleMove.transform.position = spawnPoint.position;
-        waterObsticleMove.SetMoveDirection(moveDirection);
+        ChoseMoveDirection(waterObsticleMove, spawnLeft, moveDirection);
+
+        ChoseRotation(waterObsticle, spawnLeft);
+    }
+
+    private void ChoseRotation(GameObject waterObsticle,bool isLeft)
+    {
+        if (isLeft)
+        {
+            waterObsticle.transform.rotation = Quaternion.Euler(0, 0, 0);
+        }
+        else
+        {
+            waterObsticle.transform.rotation = Quaternion.Euler(0, 0, 180);
+        }
+    }
+
+    private void ChoseMoveDirection(WaterObsticlesMove waterObsticlesMove, bool isLeft, Vector3 moveDirection)
+    {
+        if (isLeft)
+        {
+            waterObsticlesMove.SetMoveDirection(moveDirection);
+        }
+        else
+        {
+            waterObsticlesMove.SetMoveDirection(moveDirection * -1);
+        }
+    }
+
+    private IEnumerator InitializeSpawner()
+    {
+        while(true)
+        {
+            yield return new WaitForSeconds(spawnInterval);
+            Spawn();
+        }
+    }
+
+    public void IncreaseInterval(float IncreseAmount)
+    {
+        if (spawnInterval > maxSpawnInterval)
+        {
+            spawnInterval -= IncreseAmount;
+        }
     }
 }

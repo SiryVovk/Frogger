@@ -12,6 +12,11 @@ public class GoalsCounter : MonoBehaviour
         GoalTrigger.OnGoalReached += HandleGoalReached;
     }
 
+    private void OnDisable()
+    {
+        GoalTrigger.OnGoalReached -= HandleGoalReached;
+    }
+
     private void HandleGoalReached(GoalTrigger trigger)
     {
         goalsCounter--;
@@ -22,7 +27,7 @@ public class GoalsCounter : MonoBehaviour
     {
         if(goalsCounter <= 0)
         {
-            OnAllGoalsReached?.Invoke(GameEndCondition.PlayerDied);
+            OnAllGoalsReached?.Invoke(GameEndCondition.AllGoalsReached);
         }
     }
 }

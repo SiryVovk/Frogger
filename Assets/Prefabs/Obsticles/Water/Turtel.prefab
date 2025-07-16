@@ -731,9 +731,11 @@ GameObject:
   - component: {fileID: 6507621565997063518}
   - component: {fileID: 5275332232572247688}
   - component: {fileID: 726340186180252793}
+  - component: {fileID: -8061103511973051804}
+  - component: {fileID: -7675850749294851861}
   m_Layer: 8
   m_Name: Turtel
-  m_TagString: Untagged
+  m_TagString: Turtle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -782,3 +784,39 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveDirection: {x: 1, y: 0, z: 0}
   speed: 2
+--- !u!114 &-8061103511973051804
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8672438507389225545}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8da45245668fbe04d9af2e8d5d71e77e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-7675850749294851861
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8672438507389225545}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e83f4f65cfd91ae47b5d9624f03c8a1a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  allChildColliders:
+  - {fileID: 1982426449782183280}
+  - {fileID: 5861414191176747119}
+  - {fileID: 7801056929984856523}
+  allChildSprites:
+  - {fileID: 973059957414882135}
+  - {fileID: 5411695375485529744}
+  - {fileID: 5897384296471967229}
+  diveCheckInterval: 4
+  diveChance: 0.6
+  partStepDelay: 0.5
+  underwaterDuration: 2

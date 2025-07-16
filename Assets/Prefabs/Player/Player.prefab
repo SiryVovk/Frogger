@@ -196,9 +196,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 714d4b7fed0586f40b628ca203d9c219, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerMovement: {fileID: 6267000743713661365}
   minimalWaterYThreshold: 1
   overlapSizeOnLog: 0.9
-  overlapSizeOnGoal: 0.7
+  overlapSizeOnGoal: 0.55
 --- !u!61 &1987767580169471515
 BoxCollider2D:
   m_ObjectHideFlags: 0

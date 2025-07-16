@@ -15,19 +15,22 @@ public class GameStart : MonoBehaviour
 
     private void Awake()
     {
-        playerInput = new Player();
+        playerInput = InputManager.InputActions;
     }
 
     private void OnEnable()
     {
-        playerInput.Enable();
         playerInput.Menu.StartGame.performed += OnStartGamePerformed;
     }
 
     private void OnDisable()
     {
-        playerInput.Disable();
         playerInput.Menu.StartGame.performed -= OnStartGamePerformed;
+    }
+
+    private void Start()
+    {
+        playerInput.Enable();
     }
 
     private void OnStartGamePerformed(InputAction.CallbackContext context)
@@ -38,5 +41,7 @@ public class GameStart : MonoBehaviour
         isGameStarted = true;
         startGameUI.SetActive(false);
         OnGameStarted?.Invoke();
+
+        enabled = false;
     }
 }
