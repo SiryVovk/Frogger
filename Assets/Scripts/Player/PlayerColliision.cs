@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -13,6 +14,9 @@ public class PlayerCollision : MonoBehaviour
     private PlayerRespawn playerRespawn;
     private Health health;
     private BoxCollider2D boxCollider2D;
+
+    public Action playerDied;
+    public Action playerOnGoal;
 
     private void OnEnable()
     {
@@ -105,6 +109,7 @@ public class PlayerCollision : MonoBehaviour
     {
         if (health.IsAlive)
         {
+            playerDied?.Invoke();
             playerRespawn?.RespawnPlayer();
         }
         else
@@ -126,6 +131,7 @@ public class PlayerCollision : MonoBehaviour
 
     public void TriggerGoalSequence(GameObject ghostPlayerPrefab, Vector3 goalPosition, Transform parentGoal)
     {
+        playerOnGoal?.Invoke();
         transform.SetParent(null);
         StartCoroutine(GoalSequenceRoutine(ghostPlayerPrefab, goalPosition, parentGoal));
     }

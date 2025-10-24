@@ -28,7 +28,6 @@ public class PlayerRespawn : MonoBehaviour
                 movement.isMoving = false;
             }
 
-            currentPlayer.SetActive(false);
             currentPlayer.transform.position = respawnPoint.position;
             currentPlayer.SetActive(true);
 

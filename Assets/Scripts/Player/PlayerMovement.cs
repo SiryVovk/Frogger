@@ -12,8 +12,9 @@ public class PlayerMovement : MonoBehaviour
 
     private PlayerInput playerInput;
 
-    public  event Action<Vector3> OnPlayerUpMove;
-    public  event Action OnPlayerMovementFinished;
+    public event Action<Vector3> OnPlayerUpMove;
+    public event Action OnPlayerMove; 
+    public event Action OnPlayerMovementFinished;
 
     private void Awake()
     {
@@ -44,6 +45,7 @@ public class PlayerMovement : MonoBehaviour
 
     private IEnumerator MoveRoutine(Vector3 direction)
     {
+        OnPlayerMove?.Invoke();
         isMoving = true;
         inputEnabled = false;
         float elapsedTime = 0f;
